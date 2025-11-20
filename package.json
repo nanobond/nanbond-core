@@ -1,0 +1,24 @@
+{
+  "name": "nanobond-contracts",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@hashgraph/smart-contracts": "github:hashgraph/hedera-smart-contracts",
+    "@nomicfoundation/hardhat-ignition": "^3.0.5",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@nomicfoundation/hardhat-toolbox-mocha-ethers": "^3.0.1",
+    "@openzeppelin/contracts-upgradeable": "^5.4.0",
+    "@types/chai": "^4.2.0",
+    "@types/chai-as-promised": "^8.0.1",
+    "@types/mocha": ">=10.0.10",
+    "@types/node": "^22.8.5",
+    "chai": "^5.1.2",
+    "dotenv": "^17.2.3",
+    "ethers": "^6.14.0",
+    "forge-std": "foundry-rs/forge-std#v1.9.4",
+    "hardhat": "^3.0.13",
+    "install": "^0.13.0",
+    "mocha": "^11.0.0",
+    "typescript": "~5.8.0"
+  }
+}
