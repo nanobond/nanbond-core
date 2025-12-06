@@ -43,5 +43,13 @@ export default defineConfig({
       url: configVariable("HEDERA_RPC_URL"),
       accounts: [configVariable("HEDERA_PRIVATE_KEY")],
     },
+    hederaMainnet: {
+      type: "http",
+      chainType: "l1",
+      // Hedera Mainnet EVM chain id
+      chainId: 295,
+      url: configVariable("HEDERA_MAINNET_RPC_URL"),
+      accounts: [configVariable("HEDERA_MAINNET_PRIVATE_KEY")],
+    },
   },
 });

@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-cf338df3125313df18458fc32752690629a5ecdf",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/Proxy.sol": "project/contracts/Proxy.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/Proxy.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.19;\n\n/**\n * @title Nanobond ERC-1967 Minimal Proxy (UUPS-compatible)\n * @author Nanobond\n *\n * - Minimal, production-oriented ERC-1967 proxy.\n * - No admin functions on the proxy itself — UUPS upgrade logic lives in the implementation.\n * - Stores implementation at the EIP-1967 slot and delegates all calls.\n * - Constructor optionally executes an initialization call on the implementation.\n *\n * Usage:\n * 1. Deploy implementation (AdminV1).\n * 2. Deploy this proxy with implementation address and optional init calldata.\n * 3. All calls to the proxy are delegatecalled to the current implementation.\n *\n * SECURITY NOTES:\n * - The implementation must implement _authorizeUpgrade (UUPS) and secure upgrades (multisig/timelock).\n * - Operator MUST ensure the implementation is trusted before pointing the proxy at it.\n * - This proxy intentionally keeps surface-area minimal to make audits easier.\n */\ncontract NanobondProxy {\n    // EIP-1967 implementation slot: keccak256(\"eip1967.proxy.implementation\") - 1\n    bytes32 private constant IMPLEMENTATION_SLOT =\n        0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;\n\n    /// Emitted when the proxy is deployed and implementation set.\n    event ImplementationSet(address indexed implementation, bytes initData);\n\n    /**\n     * @dev Deploy proxy pointing to `_implementation`. If `_data` is non-empty,\n     * perform a delegatecall to `_implementation` with `_data` (initializer).\n     */\n    constructor(address _implementation, bytes memory _data) payable {\n        require(_implementation != address(0), \"NanobondProxy: impl=0\");\n\n        // Set implementation slot\n        assembly {\n            sstore(IMPLEMENTATION_SLOT, _implementation)\n        }\n\n        // If init data supplied, delegatecall into implementation for initialization\n        if (_data.length > 0) {\n            (bool ok, bytes memory ret) = _implementation.delegatecall(_data);\n            // bubble up revert message if init fails\n            if (!ok) {\n                // If ret contains a revert reason, revert with it\n                assembly {\n                    let size := mload(ret)\n                    revert(add(ret, 32), size)\n                }\n            }\n        }\n\n        emit ImplementationSet(_implementation, _data);\n    }\n\n    /**\n     * @notice Returns the current implementation address.\n     * @dev view helper — reads from EIP-1967 slot.\n     */\n    function implementation() public view returns (address impl) {\n        bytes32 slot = IMPLEMENTATION_SLOT;\n        assembly {\n            impl := sload(slot)\n        }\n    }\n\n    /**\n     * @dev Fallback that delegates calls to the implementation. Will run if no other\n     * function in the proxy matches the call data.\n     */\n    fallback() external payable {\n        _delegate();\n    }\n\n    /// @dev Allow receiving native currency (HBAR) transfers\n    receive() external payable {}\n\n    /**\n     * @dev Internal delegate to current implementation.\n     */\n    function _delegate() internal {\n        address impl = implementation();\n        require(impl != address(0), \"NanobondProxy: impl not set\");\n\n        assembly {\n            // copy calldata to memory starting at position 0\n            calldatacopy(0, 0, calldatasize())\n\n            // delegatecall to the implementation\n            let result := delegatecall(gas(), impl, 0, calldatasize(), 0, 0)\n\n            // copy returned data\n            let size := returndatasize()\n            returndatacopy(0, 0, size)\n\n            // forward return / revert\n            switch result\n            case 0 { revert(0, size) }\n            default { return(0, size) }\n        }\n    }\n}\n"
+      }
+    }
+  }
+}

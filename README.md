@@ -13,6 +13,17 @@ This example project includes:
 - TypeScript integration tests using `mocha` and ethers.js
 - Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
 
+### Hedera Mainnet Deployment: Expanding Reach
+
+We are excited to announce the successful deployment of our core contracts to the Hedera Mainnet (Chain ID 295)! This marks a significant milestone, enabling our project to leverage Hedera's high-throughput, low-fee, and enterprise-grade distributed ledger technology.
+
+The deployed contracts include:
+
+-   `AdminV1`: `0xA620147a4016953c5Cc516e726ed787E7e70b5Df`
+-   `NanobondProxy`: `0x5Df533C51af3FdE2C05a0863E28C089605cd16fE`
+
+This strategic deployment demonstrates our commitment to multi-chain compatibility and expanding the accessibility of our protocol to a broader ecosystem.
+
 ## Usage
 
 ### Running Tests
