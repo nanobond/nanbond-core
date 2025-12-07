@@ -13,7 +13,9 @@ These contracts have been audited by Gemini Google. The full audit report can be
 ### Hedera Mainnet (Chain ID 295)
 
 *   **AdminV1**: `0xA620147a4016953c5Cc516e726ed787E7e70b5Df`
+    *   [Sourcify Verified](https://sourcify.dev/server/repo-ui/295/0xA620147a4016953c5Cc516e726ed787E7e70b5Df)
 *   **NanobondProxy**: `0x5Df533C51af3FdE2C05a0863E28C089605cd16fE`
+    *   [Sourcify Verified](https://sourcify.dev/server/repo-ui/295/0x5Df533C51af3FdE2C05a0863E28C089605cd16fE)
 
 ### Hedera Testnet (Chain ID 296)
 

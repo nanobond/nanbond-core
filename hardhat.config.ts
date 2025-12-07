@@ -52,4 +52,31 @@ export default defineConfig({
       accounts: [configVariable("HEDERA_MAINNET_PRIVATE_KEY")],
     },
   },
+  etherscan: {
+    apiKey: {
+      hederaTestnet: "empty",
+      hederaMainnet: "empty",
+    },
+    customChains: [
+      {
+        network: "hederaTestnet",
+        chainId: 296,
+        urls: {
+          apiURL: "https://server-verify.hashscan.io",
+          browserURL: "https://hashscan.io/testnet",
+        },
+      },
+      {
+        network: "hederaMainnet",
+        chainId: 295,
+        urls: {
+          apiURL: "https://server-verify.hashscan.io",
+          browserURL: "https://hashscan.io/mainnet",
+        },
+      },
+    ],
+  },
+  sourcify: {
+    enabled: true,
+  },
 });
